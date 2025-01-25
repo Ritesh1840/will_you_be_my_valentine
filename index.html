@@ -69,8 +69,12 @@
     const imageDisplay = document.getElementById('imageDisplay');
     const valentineQuestion = document.getElementById('valentineQuestion');
     const responseButtons = document.getElementById('responseButtons');
+    const mediaContainer = document.getElementById('mediaContainer');
 
-    let noClickCount = 0; // Counter for "No" clicks
+    let noClickCount = 0;
+    let buttonHeight = 48;
+    let buttonWidth = 80;
+    let fontSize = 20;
 
     const sentences = [
       "Are you sure?",
@@ -87,7 +91,8 @@
       "image3.gif.mp4", // Video
       "image4.gif.mp4", // Video
       "image5.gif.mp4", // Video
-      "image6.gif.mp4"  // Video
+      "image6.gif.mp4", // Video
+      "image7.gif.mp4"  // Video
     ];
 
     const updateMedia = (path) => {
@@ -105,34 +110,34 @@
       }
     };
 
+    const moveNoButton = () => {
+      const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+      noButton.style.position = "absolute";
+      noButton.style.left = `${x}px`;
+      noButton.style.top = `${y}px`;
+    };
+
     noButton.addEventListener('click', function () {
-      if (noClickCount < 6) {
+      if (noClickCount < sentences.length) {
         valentineQuestion.textContent = sentences[noClickCount];
         updateMedia(mediaPaths[noClickCount]);
         noClickCount++;
-      } else {
-        // After 6 clicks, switch positions and trigger "Yes" button
-        const yesButtonRect = yesButton.getBoundingClientRect();
-        const noButtonRect = noButton.getBoundingClientRect();
+        moveNoButton();
 
-        // Swap positions
-        noButton.style.position = "absolute";
-        yesButton.style.position = "absolute";
+        buttonHeight += 20;
+        buttonWidth += 20;
+        fontSize += 5;
 
-        noButton.style.left = `${yesButtonRect.left}px`;
-        noButton.style.top = `${yesButtonRect.top}px`;
-
-        yesButton.style.left = `${noButtonRect.left}px`;
-        yesButton.style.top = `${noButtonRect.top}px`;
-
-        // Automatically click the Yes button
-        yesButton.click();
+        yesButton.style.height = `${buttonHeight}px`;
+        yesButton.style.width = `${buttonWidth}px`;
+        yesButton.style.fontSize = `${fontSize}px`;
       }
     });
 
     yesButton.addEventListener('click', () => {
       updateMedia("image7.gif.mp4");
-      valentineQuestion.textContent = "Yay! That's like my pookieee❤️ Thank you so much for accepting my proposal 🤗";
+      valentineQuestion.textContent = "Yay! That's like my pookieee❤️";
       responseButtons.style.display = 'none';
       confetti();
     });
